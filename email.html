@@ -12,6 +12,16 @@
   <xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml>
   <![endif]-->
   <style>
+    /* Custom font — Apple Mail / iOS Mail will load it; Gmail/Outlook strip
+       <style> and fall through to the inline font-family stack on the M-SERIES
+       wordmark, which keeps the same uppercase/tracked/black-weight feel. */
+    @font-face {
+      font-family: 'Monument Extended';
+      src: url('https://xgcargo-m-series-klaviyo-email.vercel.app/fonts/MonumentExtended-Ultrabold.woff2') format('woff2');
+      font-weight: 800 900;
+      font-style: normal;
+      font-display: swap;
+    }
     body, table, td { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
     table { border-collapse:collapse !important; }
     img { -ms-interpolation-mode:bicubic; border:0; outline:none; text-decoration:none; display:block; }
@@ -75,7 +85,7 @@
             </td>
           </tr>
           <tr>
-            <td align="center" class="px-32 h1" style="padding:14px 32px 4px; font-family:'Helvetica Neue',Arial Black,Arial,sans-serif; font-weight:900; font-size:64px; line-height:0.95; letter-spacing:0.02em; color:#f5f5f7; text-transform:uppercase;">
+            <td align="center" class="px-32 h1" style="padding:14px 32px 4px; font-family:'Monument Extended','Helvetica Neue',Arial Black,Arial,sans-serif; font-weight:900; font-size:64px; line-height:0.95; letter-spacing:0.02em; color:#f5f5f7; text-transform:uppercase;">
               M&#8209;SERIES
             </td>
           </tr>
