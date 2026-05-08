@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>M-Series Klaviyo Email — Preview</title>
+  <link rel="icon" href="data:," />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --bg: #1a1a1c;
+      --panel: #232326;
+      --border: #303034;
+      --fg: #e9e9eb;
+      --fg-dim: #9999a0;
+      --accent: #d4c8a8;
+      --accent-strong: #615a45;
+    }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif; }
+
+    .topbar {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(26,26,28,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+    }
+    .brand { font-weight: 800; letter-spacing: 0.2em; font-size: 12px; text-transform: uppercase; color: var(--fg); }
+    .brand .dot { display: inline-block; width: 6px; height: 6px; background: var(--accent); border-radius: 999px; margin-right: 10px; vertical-align: middle; }
+    .meta { color: var(--fg-dim); font-size: 12px; letter-spacing: 0.04em; }
+    .grow { flex: 1; }
+    .toggle { display: inline-flex; background: var(--panel); border: 1px solid var(--border); border-radius: 999px; padding: 3px; }
+    .toggle button {
+      background: transparent; color: var(--fg-dim); border: 0; padding: 7px 16px; border-radius: 999px;
+      font: inherit; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; cursor: pointer;
+    }
+    .toggle button.active { background: var(--accent-strong); color: #fff; }
+    .btn {
+      background: var(--accent); color: #1a1a1c; border: 0; border-radius: 999px;
+      padding: 9px 18px; font: inherit; font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; cursor: pointer; text-decoration: none; display: inline-block;
+    }
+    .btn.ghost { background: transparent; color: var(--fg); border: 1px solid var(--border); }
+    .btn:active { transform: translateY(1px); }
+
+    .stage {
+      display: flex; flex-direction: column; align-items: center; padding: 40px 20px 80px;
+    }
+
+    .client {
+      width: 100%; max-width: 760px;
+      background: var(--panel); border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+      box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6);
+    }
+    .client-head { padding: 18px 22px; border-bottom: 1px solid var(--border); }
+    .client-head .subject { font-size: 16px; font-weight: 700; color: var(--fg); }
+    .client-head .from { color: var(--fg-dim); font-size: 12px; margin-top: 4px; letter-spacing: 0.02em; }
+    .client-head .from b { color: var(--fg); font-weight: 600; }
+    .client-frame {
+      width: 100%; border: 0; background: #0a0a0a;
+      transition: max-width 0.25s ease, height 0.25s ease;
+      display: block; margin: 0 auto;
+    }
+    .client.mobile .client-frame { max-width: 380px; }
+
+    .footer-note {
+      max-width: 760px; margin: 24px auto 0; color: var(--fg-dim); font-size: 12px; line-height: 1.6;
+      text-align: center;
+    }
+    .footer-note code {
+      background: var(--panel); border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px;
+      color: var(--fg); font-size: 11px;
+    }
+
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: #0a0a0a; color: #fff; padding: 12px 20px; border-radius: 999px;
+      border: 1px solid var(--border); font-size: 13px; opacity: 0; pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 720px) {
+      .topbar { padding: 12px 16px; gap: 12px; }
+      .brand { display: none; }
+      .stage { padding: 24px 12px 60px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span>XG&nbsp;CARGO &middot; M-Series Klaviyo Email</div>
+    <div class="grow"></div>
+    <div class="toggle" role="tablist" aria-label="Viewport">
+      <button id="btn-desktop" class="active" role="tab" aria-selected="true">Desktop</button>
+      <button id="btn-mobile" role="tab" aria-selected="false">Mobile</button>
+    </div>
+    <button id="btn-copy" class="btn">Copy HTML</button>
+    <a id="btn-source" class="btn ghost" href="email.html" target="_blank" rel="noopener">View source</a>
+  </header>
+
+  <main class="stage">
+    <section class="client" id="client">
+      <div class="client-head">
+        <div class="subject">Your 10% off M-Series code is here</div>
+        <div class="from"><b>XG Cargo</b> &lt;hello@xgcargo.com&gt; &middot; to you</div>
+      </div>
+      <iframe id="frame" class="client-frame" src="email.html" title="Email preview" height="2400"></iframe>
+    </section>
+    <p class="footer-note">
+      This is exactly what subscribers will see. Klaviyo merge tags (<code>{% coupon_code %}</code>, <code>{{ first_name }}</code>) render as raw text here — Klaviyo replaces them at send time.
+      <br />Click <b>Copy HTML</b>, paste into Klaviyo's email <em>Source</em> view, then attach the flow.
+    </p>
+  </main>
+
+  <div class="toast" id="toast">Copied — paste into Klaviyo's HTML source view</div>
+
+  <script>
+    const client = document.getElementById('client');
+    const frame  = document.getElementById('frame');
+    const btnD   = document.getElementById('btn-desktop');
+    const btnM   = document.getElementById('btn-mobile');
+    const btnCpy = document.getElementById('btn-copy');
+    const toast  = document.getElementById('toast');
+
+    function setView(mode) {
+      if (mode === 'mobile') {
+        client.classList.add('mobile');
+        btnM.classList.add('active'); btnM.setAttribute('aria-selected', 'true');
+        btnD.classList.remove('active'); btnD.setAttribute('aria-selected', 'false');
+      } else {
+        client.classList.remove('mobile');
+        btnD.classList.add('active'); btnD.setAttribute('aria-selected', 'true');
+        btnM.classList.remove('active'); btnM.setAttribute('aria-selected', 'false');
+      }
+      sizeFrame();
+    }
+    btnD.addEventListener('click', () => setView('desktop'));
+    btnM.addEventListener('click', () => setView('mobile'));
+
+    function sizeFrame() {
+      try {
+        const doc = frame.contentDocument || frame.contentWindow.document;
+        if (doc && doc.body) frame.height = (doc.body.scrollHeight + 40) + 'px';
+      } catch (e) {}
+    }
+    frame.addEventListener('load', () => { sizeFrame(); setTimeout(sizeFrame, 200); });
+    window.addEventListener('resize', sizeFrame);
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    btnCpy.addEventListener('click', async () => {
+      try {
+        const res = await fetch('email.html', { cache: 'no-store' });
+        const html = await res.text();
+        await navigator.clipboard.writeText(html);
+        showToast('Copied — paste into Klaviyo HTML editor');
+      } catch (e) {
+        showToast('Copy failed — open View source and copy manually');
+      }
+    });
+  </script>
+</body>
+</html>
