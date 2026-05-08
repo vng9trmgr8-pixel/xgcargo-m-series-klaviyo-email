@@ -21,7 +21,7 @@ Vercel preview URL is on the GitHub repo's "deployments" tab once the first depl
 The four pieces that need to exist for the flow to work end-to-end:
 
 1. **Shopify discount code POOL** (so Klaviyo can hand out unique codes) — *Shopify side*
-2. **Klaviyo "Coupon"** named exactly `M-Series Welcome 10` — *Klaviyo side*
+2. **Klaviyo "Coupon"** named exactly `Mpod` — *Klaviyo side*
 3. **Klaviyo email template** (paste the HTML from `email.html`) — *Klaviyo side*
 4. **Klaviyo flow** triggered on "Added to List → M Series Pods" — *Klaviyo side*
 
@@ -47,7 +47,7 @@ Total ~20 minutes if you have all four tabs open.
 ### Step 2 — Klaviyo coupon (5 min)
 
 1. Klaviyo dashboard → **Coupons → Create coupon**
-2. **Coupon name:** `M-Series Welcome 10` *(must match exactly — it's referenced 8× in the email HTML)*
+2. **Coupon name:** `Mpod` *(must match exactly — it's referenced 8× in the email HTML)*
 3. **Integration:** Shopify → select your store
 4. **Code prefix:** `MSERIES-` *(so codes look like `MSERIES-A3K9X2`)*
 5. **Code length:** 6 characters
@@ -87,19 +87,19 @@ Klaviyo will now create a code on demand each time the merge tag is rendered for
 2. Submit the form with a fresh test email
 3. Confirm:
    - [ ] Email arrives within ~5 min (or whatever delay you set)
-   - [ ] Coupon code in the email is a real `MSERIES-XXXXXX` value, not the literal `{% coupon_code 'M-Series Welcome 10' %}` placeholder
+   - [ ] Coupon code in the email is a real `MSERIES-XXXXXX` value, not the literal `{% coupon_code 'Mpod' %}` placeholder
    - [ ] Clicking **Apply & Shop the Bundle** opens `xgcargo.com/discount/MSERIES-XXXXXX?redirect=/products/m-series-triple-bundle` and lands on the bundle PDP with the code applied
    - [ ] Adding the bundle to cart shows 10% off in the cart total
    - [ ] Code can't be used twice from the same customer
 
-If the coupon shows as the literal merge-tag text, the coupon name in Klaviyo doesn't match `M-Series Welcome 10` exactly — fix it in the coupon settings, not the email HTML.
+If the coupon shows as the literal merge-tag text, the coupon name in Klaviyo doesn't match `Mpod` exactly — fix it in the coupon settings, not the email HTML.
 
 ## Klaviyo merge tags used
 
 | Tag | Where | Notes |
 |-----|-------|-------|
 | `{{ first_name|default:'there' }}` | Hero greeting | Falls back to "there" if no first name |
-| `{% coupon_code 'M-Series Welcome 10' %}` | Code reveal block + every CTA URL | The unique code. Coupon name **must** match Klaviyo exactly |
+| `{% coupon_code 'Mpod' %}` | Code reveal block + every CTA URL | The unique code. Coupon name **must** match Klaviyo exactly |
 | `{% web_view %}` | "View in browser" link | Klaviyo auto-generates |
 | `{% unsubscribe_link %}` | Footer | Required for CAN-SPAM compliance |
 | `{% manage_preferences_link %}` | Footer | Optional, recommended |
